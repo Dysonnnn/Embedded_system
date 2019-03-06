@@ -1,0 +1,87 @@
+友善之臂学习笔记
+
+
+------去linuxmint折腾。
+用户名 ：dyson  密码： 123456
+-------------------------终端美化之zsh---------------------------------------
+8.oh-MY-的zsh
+哦，我的-zsh的是一款终端美化增强工具，能直观的显示本地的Git仓库
+
+cd ~/
+git clone https://github.com/gongqingfeng/oh-my-zsh.git ~/.oh-my-zsh
+cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+zsh
+如果你想要zsh成为默认的登录shell的话，需要执行：
+
+chsh -s ../usr/bin/zsh
+如果报错的话就是你的zsh命令路径不对。
+----------------------------------------------------------------
+
+
+==================mini2440用户手册.pdf==========
+4.3 建立交叉编译环境
+
+
+Step1：
+			将光盘目录 linux\中的 arm-linux-gcc-4.4.3.tgz 复制到某个目录下如 \tmp\，然后进入到该目录，执行解压命令：
+			
+			#cd /tmp
+			#tar xvzf arm-linux-gcc-4.4.3.tgz –C /
+			
+			注意： C 后面有个空格，并且 C 是大写的，它是英文单词“Change”的第一个字母，
+			在此是改变目录的意思。
+
+			执行该命令，将把 arm-linux-gcc 安装到/usr/loca/arm/4.4.3 目录。
+			---实际上并没有看到。。。	只是在/opt/  看到了文件FriendlyARM/文件夹
+
+Step2：
+			把编译器路径加入系统环境变量，运行命令
+			#vim /root/.bashrc
+			编辑/root/.bashrc 文件，在最后一行添加：
+			export PATH=$PATH:/opt/FriendlyARM/toolschain/4.4.3/bin
+			如图，保存退出。
+			source   /root/.bashrc
+
+			#这样配置的时候只有在root用户才能用这个arm-linux-gcc命令，为了在普通用户也能使用，在/home/用户名/.bashrc  也加一个环境变量配置
+Step3:
+			输入arm-linux-gcc 试验下是否成功
+
+
+
+
+
+==============
+报错：
+
+
+dyson-linuxmint 桌面 # arm-linux-gcc
+/opt/FriendlyARM/toolschain/4.4.3/bin/arm-linux-gcc: 15: exec: /opt/FriendlyARM/toolschain/4.4.3/bin/.arm-none-linux-gnueabi-gcc: not found
+
+解决方法：
+
+参考链接：https://zhidao.baidu.com/question/1111064815735080939.html
+
+解决方法：
+这种情况是因为你的操作系统是Ubuntu 64位的，而交叉编译工具链都是32位执行程序。要成功运行这些交叉编译工具链，需要与这些工具链相关的32位库。安装命令如下：
+
+dyson-linuxmint 桌面 # apt-get install libc6:i386 libstdc++6:i386 libncurses5:i386 zlib1g:i386
+
+
+
+报错：
+dyson-linuxmint arm-linux # gcc hello.c -o hello
+hello.c:1:19: fatal error: stdio.h: No such file or directory
+compilation terminated.
+
+
+解决方法：
+参考链接：https://stackoverflow.com/questions/19580758/gcc-fatal-error-stdio-h-no-such-file-or-directory
+
+安装依赖库
+
+dyson-linuxmint arm-linux # apt-get install libc6-dev
+
+就可以了
+------------------------------
+
+
